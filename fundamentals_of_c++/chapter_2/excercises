@@ -1,0 +1,60 @@
+1. What preprocessor directive is necessary to use statements with the std::cout 
+printing stream object?
+- <iostream>
+
+
+2. What statement allows the short name cout to be used instead of std::cout?
+- using
+
+
+3. What does the name std stand for?
+- standard
+
+
+4. All C++ programs must have a function named what?
+- int main()
+
+
+5. The body of main is enclosed within what symbols?
+- curly brackets {}
+
+
+6. What operator directs information to the std::cout output stream?
+- compiler
+
+
+7. Write a C++ program that prints your name in the console window.
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    cout << "This is a simple C++ program!\n";
+
+    return 0;
+}
+
+
+
+8. Write a C++ program that prints your first and last name in the console window. 
+Your first name should appear on one line, and your last name appear on the 
+next line.
+
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    cout << "Harrison\nAtherton";
+}
+
+
+9. What other files must you distribute with your executable file so that your program will run on a Windows PC without Visual Studio installed?
+- any library that is used within the code
+
+
+
+10. Can a single statement in C++ span multiple lines in the source code?
+- yes
