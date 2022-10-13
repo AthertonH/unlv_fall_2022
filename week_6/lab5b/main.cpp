@@ -1,34 +1,34 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
-#include <string>
-#include <cmath>
-
 using namespace std;
 
 int main()
 {
-    int runningTotal = 0;
-    string fileName;
-    ifstream fin;
-
-    do
-    {
-        cout << "Enter a file name\n**";
-        cin >> fileName;
-
-        fin.open(fileName);
-
-        if(fin.is_open())
-        {
-            string line;
-            while(getline(fin, line))
-            {
-                runningTotal = runningTotal + stoi(line);
-                cout << 
-                cout << line << endl;
-            }
-            fin.close();
-            cout << runningTotal << endl;
-        }   
-    } while (!fin.is_open());
+	ifstream fileReader;
+	string filename = "";
+	int total = 0;
+	do
+	{
+		cout << "Open file: ";
+		getline(cin, filename);
+		
+		fileReader.open(filename);	
+		
+		if(fileReader.is_open() == false)
+		{
+			cout << "Could not open " << filename << endl;
+		}
+	}
+	while(fileReader.is_open() == false);
+	
+	while(!fileReader.eof())
+	{
+        string line = "";
+		getline(fileReader, line);
+        cout << line << endl;
+        
+	}	
+	
+	return 0;
 }
