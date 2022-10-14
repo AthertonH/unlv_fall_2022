@@ -1,5 +1,5 @@
 /*
-    Name: Harrison Atherton, 5005662748, 1019, #5B
+    Name: Harrison Atherton, 5005662748, 1019, #5A
     Description: Using nested loops, an upside down triangle
     and a right side up triangle will be outputted
     Input: User inserts how many stars they want
