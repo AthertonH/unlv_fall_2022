@@ -32,7 +32,6 @@ int main()
     // Begin game loop with a do while
     do
     {
-        
         // ENSURE GAME STARTS AT BEGINNING
         if(reset == true)
         {
