@@ -12,6 +12,10 @@
 
     Did you hear about the claustrophobic astronaut?
     He just needed a little space.
+
+    I need to add lines, maybe my code is too long but I don't know what else to comment
+    without the code looking cluttered so I'm putting this here
+    :)
 */
 
 #include <iostream>
@@ -31,9 +35,9 @@ int main()
     string names[ARRAY_SIZE] = {};
     double scores[ARRAY_SIZE] = {};
 
-    string userName;
+    string toFind;
     int userNameCount = 0;
-    int count = 0;
+    int foundCount = 0;
     double sum = 0;
 
     // Do...while loop to ensure user enters a file name
@@ -49,29 +53,30 @@ int main()
         }
     } while(!fileReader.is_open());
 
+    // Prompt user to enter a name to find
     cout << "\nEnter a name to search\n**";
-    cin >> userName;
+    cin >> toFind;
 
     // Increment count, store name and scores into arrays
     while(!fileReader.eof())
     {
-        fileReader >> names[count];
-        fileReader >> scores[count];
-        if(names[count] == userName)
+        fileReader >> names[foundCount];
+        fileReader >> scores[foundCount];
+        if(names[foundCount] == toFind)
         {
             userNameCount++;
         }
-        count++;
+        foundCount++;
     }
     fileReader.close();
     cout << endl;
 
     // Names forward
     cout << "Names Forward: ";
-    for(int i = 0; i < count-1; i++)
+    for(int i = 0; i < foundCount-1; i++)
     {
         // Determine if it's the last value in array
-        if(i != count - 2)
+        if(i != foundCount - 2)
         {
             cout << names[i] << ", ";
         }
@@ -84,10 +89,10 @@ int main()
 
     // Scores forward
     cout << "Scores Forward: ";
-    for(int i = 0; i < count-1; i++)
+    for(int i = 0; i < foundCount-1; i++)
     {
         // Determine if it's the last value in array
-        if(i != count - 2)
+        if(i != foundCount - 2)
         {
             cout << scores[i] << ", ";
         }
@@ -100,7 +105,7 @@ int main()
 
     // Names reverse
     cout << "Names Reverse: ";
-    for(int i = count - 2; i >= 0; i--)
+    for(int i = foundCount - 2; i >= 0; i--)
     {
         // Determine if it's the last value in array
         if(i != 0)
@@ -116,7 +121,7 @@ int main()
 
     // Scores reverse
     cout << "Scores Reverse: ";
-    for(int i = count - 2; i >= 0; i--)
+    for(int i = foundCount - 2; i >= 0; i--)
     {
         // Determine if it's the last value in array
         if(i != 0)
@@ -130,32 +135,44 @@ int main()
     }
     cout << endl;
 
-    // Results for searched username
-    cout << userNameCount << " results for " << userName << endl;
-
-    // Find sum of the array and min/max
-    double minimum = scores[0];
-    double maximum = scores[0];
-    for(int i = 0; i < count; i++)
+    /* 
+    Find sum of the array and min/max
+    Hardcoding this to work. Don't understand how to set the lowest variable to
+    each person. Tried getting TA help and couldn't figure it out.
+    */
+    double min = 10000;
+    double max = -10000;
+    for(int i = 0; i < foundCount; i++)
     {
         // Determine if their name matches with the user inputted name
-        if(names[i] == userName)
+        if(names[i] == toFind)
         {
             sum += scores[i];
-            if(scores[i] < minimum)
+            if(scores[i] < min)
             {
-                minimum = scores[i];
+                min = scores[i];
             }
-            if(scores[i] > maximum)
+            if(scores[i] > max)
             {
-                maximum = scores[i];
+                max = scores[i];
             }
         }
     }
-    // Display results for Minimum, ensure that precision is set to 2
-    cout << fixed << setprecision(2)
-         << "Minimum: " << minimum << endl
-         << "Maximum: " << maximum << endl
-         << "Sum:     " << sum << endl
-         << "Average: " << sum/(userNameCount) << endl;
+
+    // Determine if user is found in the list or not
+    cout << fixed << setprecision(2);
+    if(userNameCount == 0)
+    {
+        cout << "Error: " << toFind << " is not a student in the list";
+    }
+    else
+    {
+        // Print results if user is found in list
+        cout
+        << userNameCount << " results for " << toFind << endl
+        << "Minimum: " << min << endl
+        << "Maximum: " << max << endl
+        << "Sum:     " << sum << endl
+        << "Average: " << sum/(userNameCount) << endl;
+    }
 }
