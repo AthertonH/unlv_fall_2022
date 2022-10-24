@@ -8,8 +8,6 @@
     if they would like to play again.
     Output: Visualization of the remaining sticks will be outputted 
     to the terminal.
-
-    tbh just writing something so I can update my github
 */
 
 #include <iostream>
