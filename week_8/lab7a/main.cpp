@@ -22,7 +22,7 @@ int main()
     // Declare variables
     ifstream iFile;
     string fileName = "";
-    double numbers[HEIGHT][WIDTH];
+    double numbers[HEIGHT][WIDTH] = {};
 
     // Open the file
     do
