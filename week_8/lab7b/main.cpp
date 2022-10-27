@@ -27,7 +27,7 @@ int main()
 
     string city = "";
     int year = 0;
-    double arr[MONTHS][TEMPS];
+    double arr[MONTHS][TEMPS] = {0,0};
     double lowestTempYear = 100;
     double highestTempYear = 0;
     double lowTempSum = 0;
