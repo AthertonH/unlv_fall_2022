@@ -84,6 +84,7 @@ int main()
             fileWriter.close();
         }
     }
+    fileWriter.close();
     
     // Print how many violations have occurred to the terminal.
     cout << violations << " violations logged." << endl;
