@@ -1,25 +1,23 @@
 #include <iostream>
-
 using namespace std;
 
-int size = 0;
 
-int getIntegerInput(string prompt, int min, int max)
+#include <iostream>
+using namespace std;
+
+int main()
 {
-    cout << prompt;
-    return size;
-}
+	int size = 3;
+	char character = 'a';
 
-
-int main() {
-	// Minimums/maximums
-	const int MIN = 2;
-	const int MAX = 20;
-	// Prompt for integer input
-	string prompt1 = "Enter a count between " +
-		to_string(MIN) + " and " +
-		to_string(MAX) + "\n**";
-	// Prompt for character input
-
-    return 0;
+    // Keeps track of what row is currently printing
+    for (int i = 0; i <= size; i++)
+    {
+        // Keeps track of what column is currently printing
+        for (int j = 0; j < i; j++)
+        {
+            cout << character;
+        }
+		cout << endl;
+    }
 }
