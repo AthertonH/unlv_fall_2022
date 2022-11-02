@@ -18,6 +18,7 @@ int main()
         {
             cout << character;
         }
+        if(i != size)
 		cout << endl;
     }
 }

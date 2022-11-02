@@ -35,7 +35,6 @@ int main()
 	char character = getCharacterInput(prompt2);
 	
 	// Write both triangles
-	cout << endl << endl;
 	writeUpsideDownTriangle(size, character);
 	writeRightsideUpTriangle(size, character);
 	cout << endl;
@@ -58,7 +57,7 @@ int getIntegerInput(string prompt, int min, int max)
 		{
 			cin.clear();
 			cin.ignore(200, '\n');
-			cout << "\nError: Invalid entry, please retry\n";
+			cout << "\nError: Invalid input!\n";
 		}
 	} while ((choice > max) || (choice < min));
 
@@ -68,7 +67,7 @@ int getIntegerInput(string prompt, int min, int max)
 // Receive character input for triangle
 char getCharacterInput(string prompt)
 {
-	char choice;
+	char choice = ' ';
 	cout << prompt;
 	cin >> choice;
 	return choice;
@@ -77,6 +76,7 @@ char getCharacterInput(string prompt)
 // Write the triangle Upside Down
 void writeUpsideDownTriangle(int size, char character)
 {
+	cout << endl;
     // Keeps track of what row is currently printing
     for (int i = size; i > 0; i--)
     {
@@ -103,6 +103,6 @@ void writeRightsideUpTriangle(int size, char character)
         {
             cout << character;
         }
-		cout << endl;
+		if(i != size) cout << endl;
     }
 }
