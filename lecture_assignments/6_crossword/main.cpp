@@ -1,16 +1,29 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <sstream>
+#include <cstdlib>
 using namespace std;
+
+void openLevel();
+bool playAgain();
 
 int main()
 {
-    // Declare variables
+
+    do
+    {
+        openLevel();
+        playAgain();
+    } while (playAgain());
+
+
+}
+
+void openLevel()
+{
     ifstream iFile;
     string fileName = "";
-    int boardWidth = 0;
-    int boardHeight = 0;
-
-    // Open the file
     do
     {
         cout << "Enter level to play:\n";
@@ -21,8 +34,27 @@ int main()
         {
             cout << "Invalid Entry!\n";
         }
-    } while(!iFile.is_open());
+    } while(!iFile.is_open()); 
+}
 
+void closeLevel()
+{
     
-    
+}
+
+bool playAgain()
+{
+    char answer = ' ';
+
+    do
+    {
+        cout << "Would you like to play again? Y/N";
+        cin >> answer;
+        if(answer == 'Y' || answer == 'y')
+            return true;
+        else if(answer == 'N' || answer == 'n')
+            return false;
+        else
+            cout << "Invalid entry, try again";
+    } while (!cin.fail());
 }
