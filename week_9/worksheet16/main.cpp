@@ -4,7 +4,7 @@ using namespace std;
 int frequency_Substr(string mainWord,string subWord)
 {
     int count=0;
-    for (int i = 0; i <mainWord.size()-1; i++)
+    for (int i = 0; i < mainWord.size()-1; i++)
     {
         int m = 0;
         for (int j = 0; j < subWord.size(); j++)
