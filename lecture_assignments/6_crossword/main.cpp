@@ -10,10 +10,22 @@ bool playAgain();
 
 int main()
 {
+    vector<vector<string>> vec;
+    string row = " ";
+    int hashLocation = 0;
+    string currentWord = "";
+    ifstream iFile;
+
+
 
     do
     {
         openLevel();
+
+
+
+
+
         playAgain();
     } while (playAgain());
 
@@ -36,6 +48,9 @@ void openLevel()
         }
     } while(!iFile.is_open()); 
 }
+
+void printLevel()
+{}
 
 void closeLevel()
 {
