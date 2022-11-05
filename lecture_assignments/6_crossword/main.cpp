@@ -14,18 +14,10 @@ int main()
     string row = " ";
     int hashLocation = 0;
     string currentWord = "";
-    ifstream iFile;
-
-
 
     do
     {
         openLevel();
-
-
-
-
-
         playAgain();
     } while (playAgain());
 
@@ -36,6 +28,7 @@ void openLevel()
 {
     ifstream iFile;
     string fileName = "";
+    
     do
     {
         cout << "Enter level to play:\n";
@@ -47,10 +40,38 @@ void openLevel()
             cout << "Invalid Entry!\n";
         }
     } while(!iFile.is_open()); 
+
+    int hashLocation = 0;
+    string currentWord = "";
+    string row = "";
+    vector<vector<string>> vec;
+
+    while(getline(iFile, row))
+    {
+        vec.push_back(vector<string>());
+
+        while(row.find("#") != string::npos)
+        {
+            hashLocation = row.find("#");
+            currentWord = row.substr(0, hashLocation);
+            vec[vec.size()-1].push_back(currentWord);
+            row = row.substr(hashLocation+1, row.length());
+        }
+        vec[vec.size()-1].push_back(row);
+    }
+
+        for(int i = 0; i < vec.size(); i++)
+    {
+        for(int j = 0; j < vec[i].size(); j++)
+        {
+            cout << vec[i][j]
+                 << ((j != vec[i].size() - 1) ? "#" : "\n");
+        }
+    }
+
+
 }
 
-void printLevel()
-{}
 
 void closeLevel()
 {

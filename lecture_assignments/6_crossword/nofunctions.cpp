@@ -3,18 +3,21 @@
 #include <vector>
 #include <sstream>
 #include <cstdlib>
+#include <cctype>
 using namespace std;
 
 int main()
 {
     ifstream iFile;
     string fileName = "";
-    vector<vector<string>> vec;
+    vector<vector<string>> answers;
+    vector<vector<string>> questions;
     string row = " ";
     int hashLocation = 0;
     string currentWord = "";
     int remainingGuesses = 0;
 
+    // Open the level
     do
     {
         cout << "Enter level to play:\n";
@@ -27,32 +30,52 @@ int main()
         }
     } while(!iFile.is_open());
 
+    // Create the vector containing the answers
     while(getline(iFile, row))
     {
-        vec.push_back(vector<string>());
+        answers.push_back(vector<string>());
 
         while(row.find("#") != string::npos)
         {
             hashLocation = row.find("#");
             currentWord = row.substr(0, hashLocation);
-            vec[vec.size()-1].push_back(currentWord);
+            answers[answers.size()-1].push_back(currentWord);
             row = row.substr(hashLocation+1, row.length());
         }
-        vec[vec.size()-1].push_back(row);
+        answers[answers.size()-1].push_back(row);
     }
 
-    for(int i = 0; i < vec.size(); i++)
+    // Copy the vector containing the questions
+    questions = answers;
+
+
+    // Print the vector containing the questions
+    for(int i = 0; i < answers.size(); i++)
     {
-        for(int j = 0; j < vec[i].size(); j++)
+        for(int j = 0; j < answers[i].size(); j++)
         {
-            if(vec[i][j] > 'a' && vec[i][j] < 'z')
+            if(answers[i][j] != "#" && answers[i][j] != " ")
             {
-                
+                cout << "_";
             }
-
-
-            // cout << vec[i][j]
-            //      << ((j != vec[i].size() - 1) ? "#" : "\n");
+            else
+            {
+                cout << ((j != answers[i].size() - 1) ? "#" : "\n");
+            }
         }
     }
+
+    cout << endl << endl;
+
+    // Print out vector containing the answers
+    for(int i = 0; i < answers.size(); i++)
+    {
+        for(int j = 0; j < answers[i].size(); j++)
+        {
+            cout << answers[i][j]
+                 << ((j != answers[i].size() - 1) ? "#" : "\n");
+        }
+    }
+
+
 }
