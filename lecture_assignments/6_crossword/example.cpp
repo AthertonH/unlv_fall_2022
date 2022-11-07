@@ -147,7 +147,7 @@ vector<vector<char>> replace2(vector<vector<char>> v)
         {
             //! checkpoint: same with above
             // so if it is letter -> we will replace it with _
-            if (v[j][i] != '!' && v[j][i] != '-')
+            if (v[j][i] != '#' && v[j][i] != ' ')
             {
                 v[j][i] = '_';
             }

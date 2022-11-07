@@ -1,96 +1,119 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <sstream>
-#include <cstdlib>
 using namespace std;
 
-void openLevel();
-bool playAgain();
+vector<vector<char>> readData(string fileName);
+vector<vector<char>> replace1(vector<vector<char>> v);
+vector<vector<char>> replace2(vector<vector<char>> v);
+void print2dVector(vector<vector<char>> v);
+string chooseLevel();
 
 int main()
 {
-    vector<vector<string>> vec;
-    string row = " ";
-    int hashLocation = 0;
-    string currentWord = "";
 
-    do
-    {
-        openLevel();
-        playAgain();
-    } while (playAgain());
+    
+    vector<vector<char>> data1;
+    vector<vector<char>> data2; 
 
+    // read data from files
+    data1 = readData(chooseLevel());
+    // data2 = readData(chooseLevel());
 
+    // print data from files
+    cout << "Before replace\n";
+    print2dVector(data1);
+    cout << '\n';
+    print2dVector(data2);
+
+    cout << "------------------------------------------------------------\n";
+
+    cout
+        << "\nAfter replace using method 1 or replace1\n";
+    data1 = replace1(data1);
+    print2dVector(data1);
+
+    cout << "\nAfter replace using method 2 or replace2\n";
+    data2 = replace2(data2);
+    print2dVector(data2);
+
+    return 0;
 }
 
-void openLevel()
+string chooseLevel()
 {
-    ifstream iFile;
-    string fileName = "";
-    
-    do
+    string level = "";
+    cout << "Enter level to play:\n";
+    cin >> level;
+    return level;
+}
+
+// Read data in the file
+vector<vector<char>> readData(string fileName)
+{
+    vector<vector<char>> board;
+
+    ifstream file(fileName);
+    if (file)
     {
-        cout << "Enter level to play:\n";
-        cin >> fileName;
-        iFile.open(fileName);
-
-        if(!iFile.is_open())
+        string line;
+        while (getline(file, line))
         {
-            cout << "Invalid Entry!\n";
-        }
-    } while(!iFile.is_open()); 
-
-    int hashLocation = 0;
-    string currentWord = "";
-    string row = "";
-    vector<vector<string>> vec;
-
-    while(getline(iFile, row))
-    {
-        vec.push_back(vector<string>());
-
-        while(row.find("#") != string::npos)
-        {
-            hashLocation = row.find("#");
-            currentWord = row.substr(0, hashLocation);
-            vec[vec.size()-1].push_back(currentWord);
-            row = row.substr(hashLocation+1, row.length());
-        }
-        vec[vec.size()-1].push_back(row);
-    }
-
-        for(int i = 0; i < vec.size(); i++)
-    {
-        for(int j = 0; j < vec[i].size(); j++)
-        {
-            cout << vec[i][j]
-                 << ((j != vec[i].size() - 1) ? "#" : "\n");
+            vector<char> row;                       
+            for (int i = 0; i < line.length(); i++) 
+            {
+                row.push_back(line[i]);
+            }
+            board.push_back(row);
         }
     }
-
-
-}
-
-
-void closeLevel()
-{
-    
-}
-
-bool playAgain()
-{
-    char answer = ' ';
-
-    do
+    else
     {
-        cout << "Would you like to play again? Y/N";
-        cin >> answer;
-        if(answer == 'Y' || answer == 'y')
-            return true;
-        else if(answer == 'N' || answer == 'n')
-            return false;
-        else
-            cout << "Invalid entry, try again";
-    } while (!cin.fail());
+        cout << "File not found\n";
+    }
+    file.close();
+    return board;
+}
+
+
+vector<vector<char>> replace1(vector<vector<char>> v)
+{
+    for (int i = 0; i < v.size(); i++) // loop rows
+    {
+        for (int j = 0; j < v[i].size(); j++)
+        {
+            if (isalpha(v[i][j]))
+            {
+                v[i][j] = '_';
+            }
+        }
+    }
+    return v;
+}
+
+vector<vector<char>> replace2(vector<vector<char>> v)
+{
+    for (int i = 0; i < v.size(); i++)
+    {
+        for (int j = 0; j < v[i].size(); j++)
+        {
+            if (v[j][i] != '#' && v[j][i] != ' ')
+            {
+                v[j][i] = '_';
+            }
+        }
+    }
+    return v;
+}
+
+void print2dVector(vector<vector<char>> v)
+{
+    for (int i = 0; i < v.size(); i++)
+    {
+        for (int j = 0; j < v[i].size(); j++)
+        {
+            cout << v[i][j] << " ";
+        }
+        cout << endl;
+    }
 }
