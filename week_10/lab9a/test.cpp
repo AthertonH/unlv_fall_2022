@@ -17,8 +17,8 @@ const double MAX = 20.5;
 double getDoubleInput(string, double, double);
 bool checkFailure(double, double, double);
 void getDoubleInputs(double &, double &);
-void addSubtract(double &, double &);
-void multiplyDivide(double &, double &);
+void addSubtract(double, double);
+void multiplyDivide(double, double);
 
 int main()
 {
@@ -28,6 +28,8 @@ int main()
     double subtraction = 0;
     double division = 0;
     double multiplication = 0;
+
+    cout << endl << endl << fixed << setprecision(2);
 
     getDoubleInputs(input1,input2);
     addSubtract(input1, input2);
@@ -72,7 +74,7 @@ void getDoubleInputs(double &input1, double &input2)
 
 }
 
-void addSubtract(double &num1, double &num2)
+void addSubtract(double num1, double num2)
 {
     double a = num1;
     double b = num2;
@@ -83,7 +85,7 @@ void addSubtract(double &num1, double &num2)
          << a << " - " << b << " = " << num2 << endl;
 }
 
-void multiplyDivide(double &num1, double &num2)
+void multiplyDivide(double num1, double num2)
 {
     double a = num1;
     double b = num2;
