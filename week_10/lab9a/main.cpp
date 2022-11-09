@@ -1,10 +1,9 @@
 /*
-    Name: Harrison Atherton, 5005662748, 1019, #8B
-    Description: Using functions to set flags, determine the circumference and
-    area of the given radius
-    Input: User will be prompted to enter in a double as a radius
-    Output: Calculations for the circumference and area of the given radius will be
-    given.
+    Name: Harrison Atherton, 5005662748, 1019, #9A
+    Description: Using functions and references to manipulate two user inputted doubles
+    Input: User will be prompted to enter two doubles
+    Output: Calculations using two seperate functions will determine the sum, difference,
+    division, and mulitplication of given inputs.
 */
 #include <iostream>
 #include <cmath>
@@ -17,12 +16,19 @@ const double MAX = 20.5;
 double getDoubleInput(string, double, double);
 bool checkFailure(double, double, double);
 void getDoubleInputs(double &, double &);
-void addSubtract(double&, double&);
-void multiplyDivide(double&, double&);
+void addSubtract(double, double);
+void multiplyDivide(double, double);
 
 int main()
 {
-
+    // Declare variables & references
+    double input1 = 0;
+    double input2 = 0;
+    // Call functions
+    getDoubleInputs(input1,input2);
+    cout << fixed << setprecision(2);
+    addSubtract(input1, input2);
+    multiplyDivide(input1, input2);
 }
 
 // Get users input for a double
@@ -35,6 +41,7 @@ double getDoubleInput(string prompt, double min, double max)
 	{
 		cout << prompt;
 		cin >> choice;
+        cout << endl;
 		
 	} while (!checkFailure(choice, MIN, MAX));
 	return choice;
@@ -47,7 +54,7 @@ bool checkFailure(double input, double min, double max)
     {
         cin.clear();
 		cin.ignore(200, '\n');
-		cout << "\nError: Invalid radius!\n";
+		cout << "Error: Invalid input!\n";
         return false;
     }
     return true;
@@ -55,16 +62,33 @@ bool checkFailure(double input, double min, double max)
 
 void getDoubleInputs(double &input1, double &input2)
 {
-    string prompt1 = "Enter double between 0.500000 and 20.500000";
-    string prompt2 = "Enter another double between 0.500000 and 20.500000";
-
-    getDoubleInput(prompt1, MIN, MAX);
-    cin >> input1;
-    getDoubleInput(prompt2, MIN, MAX);
-    cin >> input2;
+    string prompt1 = "Enter double between 0.500000 and 20.500000\n**";
+    string prompt2 = "Enter another double between 0.500000 and 20.500000\n**";
+    // Call getDoubleInput function to determine the reference
+    input1 = getDoubleInput(prompt1, MIN, MAX);
+    input2 = getDoubleInput(prompt2, MIN, MAX);
 }
 
-void addSubtract(double& num1, double& num2)
+void addSubtract(double num1, double num2)
 {
+    // Declare variables
+    double a = num1;
+    double b = num2;
+    num1 = a + b;
+    num2 = a - b;
+    // Output to terminal
+    cout << a << " + " << b << " = " << num1 << endl
+         << a << " - " << b << " = " << num2 << endl;
+}
 
+void multiplyDivide(double num1, double num2)
+{
+    // Declare variables
+    double a = num1;
+    double b = num2;
+    num1 = a * b;
+    num2 = a / b;
+    // Output to terminal
+    cout << a << " * " << b << " = " << num1 << endl
+         << a << " / " << b << " = " << num2;
 }

@@ -28,7 +28,7 @@ vector<vector<char>> readData(string fileName);
  * @param v - the vector containing the data from the file
  * @return vector<vector<char>> - return the board with all alphabets replaced with '_'
  */
-vector<vector<char>> replace1(vector<vector<char>> v);
+vector<vector<char>> replace(vector<vector<char>> v);
 
 // using nested loops and if statements
 /**
@@ -67,7 +67,7 @@ int main()
 
     cout
         << "\nAfter replace using method 1 or replace1\n";
-    data1 = replace1(data1);
+    data1 = replace(data1);
     print2dVector(data1);
 
     cout << "\nAfter replace using method 2 or replace2\n";
@@ -110,7 +110,7 @@ vector<vector<char>> readData(string fileName)
 }
 
 // using nested for loops and isAlpha()
-vector<vector<char>> replace1(vector<vector<char>> v)
+vector<vector<char>> replace(vector<vector<char>> v)
 {
     // we already has data for v -> no need to read again
     // so just need nested loop to replace those char that not ! and - with _ with help from isAlpha()

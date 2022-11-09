@@ -9,11 +9,14 @@ void print2dVector(vector<vector<char>> board);
 
 int main()
 {
-    vector<vector<char>> data1;
-    vector<vector<char>> data2;
+    vector<vector<char> > boardUnderscores;
+    vector<vector<char> > boardAnswers;
     ifstream fileReader;
     ofstream fileWriter;
     string level = "";
+    int remainingGuesses = 5;
+    char guesses[26] = {};
+    bool foundLetter;
 
     // Do while loop to ensure the user enters in a file name
     do
@@ -29,28 +32,45 @@ int main()
 
     } while(!fileReader.is_open());
 
-    data1 = readData(level);
+    boardAnswers = readData(level);
+    boardUnderscores = replace(boardAnswers);
 
     // print data from files
-    cout << "Before replace\n";
-    print2dVector(data1);
-    cout << '\n';
+    do
+    {
+        foundLetter = false;
+        char guess = ' ';
+        print2dVector(boardUnderscores);
+        
+        cout << "Enter a letter:\n";
+        cin >> guess;
+        guesses[guess];
 
-    cout << "------------------------------------------------------------\n";
-
-    cout
-        << "\nAfter replace using method 1 or replace1\n";
-    data2 = replace(data1);
-    print2dVector(data2);
+        for (int i = 0; i < boardAnswers.size(); i++) // loop rows
+        {
+            for (int j = 0; j < boardAnswers[i].size(); j++)
+            {
+                if (toupper(guess) == boardAnswers[i][j])
+                {
+                    boardUnderscores[i][j] = toupper(guess);
+                    foundLetter = true;
+                }
+            }
+        }
+        if(!foundLetter) remainingGuesses -= 1;
+        cout << endl << "Remaining incorrect guesses: " << remainingGuesses << endl;
+    } while ((boardUnderscores != boardAnswers) || (remainingGuesses != 0));
+    
+    
 
     return 0;
 }
 
 
 // Read data in the file
-vector<vector<char>> readData(string fileName)
+vector<vector<char> > readData(string fileName)
 {
-    vector<vector<char>> board;
+    vector<vector<char> > board;
 
     ifstream file(fileName);
     if (file)
@@ -74,7 +94,7 @@ vector<vector<char>> readData(string fileName)
     return board;
 }
 
-vector<vector<char>> replace(vector<vector<char>> board)
+vector<vector<char> > replace(vector<vector<char> > board)
 {
     for (int i = 0; i < board.size(); i++) // loop rows
     {
@@ -89,7 +109,7 @@ vector<vector<char>> replace(vector<vector<char>> board)
     return board;
 }
 
-void print2dVector(vector<vector<char>> board)
+void print2dVector(vector<vector<char> > board)
 {
     for (int i = 0; i < board.size(); i++)
     {
@@ -99,6 +119,4 @@ void print2dVector(vector<vector<char>> board)
         }
         cout << endl;
     }
-
 }
-
