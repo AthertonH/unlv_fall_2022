@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
+#include <algorithm>
 using namespace std;
 
 vector<vector<char>> readData(string fileName);
@@ -15,7 +17,7 @@ int main()
     ofstream fileWriter;
     string level = "";
     int remainingGuesses = 5;
-    char guesses[26] = {};
+    vector<char> guesses;
     bool foundLetter;
 
     // Do while loop to ensure the user enters in a file name
@@ -43,8 +45,19 @@ int main()
         print2dVector(boardUnderscores);
         
         cout << "Enter a letter:\n";
-        cin >> guess;
-        guesses[guess];
+        do
+        {
+            cin >> guess;
+            guesses.push_back(guess);
+        } while (!cin.fail());
+        
+        
+        cout << "Guesses\n";
+        for(int i = 0; i < guesses.size(); i++)
+        {
+            cout << guesses[i] << " ";
+        }
+        
 
         for (int i = 0; i < boardAnswers.size(); i++) // loop rows
         {
@@ -65,7 +78,6 @@ int main()
 
     return 0;
 }
-
 
 // Read data in the file
 vector<vector<char> > readData(string fileName)
