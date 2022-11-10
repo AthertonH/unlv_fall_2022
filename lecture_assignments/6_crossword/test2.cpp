@@ -124,8 +124,16 @@ vector<vector<char> > boardUnderscores)
         // Prompt user to enter a letter
         cout << "Enter a letter:\n";
         cin >> guess;
-        guesses.push_back(toupper(guess));
-        // Print guesses to terminal (testing)
+        char uppercaseGuess = toupper(guess);
+        if(find(guesses.begin(), guesses.end(), uppercaseGuess) != guesses.end())
+        {
+            cout << "The letter is already guessed, try again!\n";   
+        }
+        else
+        {
+            guesses.push_back(toupper(uppercaseGuess));
+        }
+        // Print guesses to terminal (TESTING)
         cout << "Guesses\n";
         for(int i = 0; i < guesses.size(); i++)
         {
