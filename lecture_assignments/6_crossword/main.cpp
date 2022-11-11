@@ -12,6 +12,13 @@
     what letter they would like to guess
     Output: The board will print to the terminal with underscores, once the user has
     guessed any correct letter, the board will be updated
+
+    What did the fish say when he swam into the wall?
+    Dam.
+
+    A man took his date to a zoo. They were disappointed to find that it 
+    only contained one animal: a dog.
+    It was a shitzu.
 */
 #include <iostream>
 #include <fstream>
@@ -23,7 +30,7 @@ using namespace std;
 // Declare function prototypes
 vector<vector<char>> readData(string fileName);
 vector<vector<char>> replace(vector<vector<char>> board);
-void print2dVector(vector<vector<char>> board);
+void print2dBoard(vector<vector<char>> board);
 string chooseLevel();
 void playGame();
 void playGame(vector<vector<char>> boardUnderscores,vector<vector<char> > boardAnswers);
@@ -34,14 +41,12 @@ int main()
     vector<vector<char>> boardUnderscores;
     vector<vector<char>> boardAnswers;
     char answer = ' ';
-
     // Pretty stuff to make it pretty
-    cout << "     Welcome to     \n\n"
-         << "         W         \n"
-         << "     C R O S S     \n"
-         << "         R         \n"
-         << "         D         \n\n";
-
+    cout << "\n     Welcome to\n\n"
+         << "         W \n"
+         << "     C R O S S\n"
+         << "         R\n"
+         << "         D\n\n";
     // Do while loop to begin the game
     do
     {
@@ -54,31 +59,30 @@ int main()
         cin >> answer;
         if(toupper(answer) == 'Y')
             continue;
-        else if(toupper(answer) == 'N')
+        if(toupper(answer) == 'N')
         {
-            cout << "Thank you for playing CrossWords!";
+            cout << "Thank you for playing CrossWord!";
             break;
         }
-        else
+        if((toupper(answer) != 'Y') || (toupper(answer) != 'N'))
             cout << "Please, answer Y or N.";
     } while ((answer != 'Y') && (answer != 'N'));
 
     return 0;
 }
-
 // Read data in the file
 vector<vector<char>> readData(string fileName)
 {
     vector<vector<char>> board;
 
     ifstream file(fileName);
-    if (file)
+    if(file)
     {
         string line;
         while (getline(file, line))
         {
             vector<char> row;                       
-            for (int i = 0; i < line.length(); i++) 
+            for (unsigned int i = 0; i < line.length(); i++) 
             {
                 row.push_back(line[i]);
             }
@@ -92,13 +96,13 @@ vector<vector<char>> readData(string fileName)
     file.close();
     return board;
 }
-
 // Replaces characters with underscores
 vector<vector<char>> replace(vector<vector<char> > board)
 {
-    for (int i = 0; i < board.size(); i++) // loop rows
+    // Replace alphas with underscores
+    for (unsigned int i = 0; i < board.size(); i++) // Loop rows
     {
-        for (int j = 0; j < board[i].size(); j++)
+        for (unsigned int j = 0; j < board[i].size(); j++) // Loop columns
         {
             if (isalpha(board[i][j]))
             {
@@ -108,20 +112,18 @@ vector<vector<char>> replace(vector<vector<char> > board)
     }
     return board;
 }
-
 // Prints the 2D Vector to the terminal
-void print2dVector(vector<vector<char>> board)
+void print2dBoard(vector<vector<char>> board)
 {
-    for (int i = 0; i < board.size(); i++)
+    for (unsigned int i = 0; i < board.size(); i++)
     {
-        for (int j = 0; j < board[i].size(); j++)
+        for (unsigned int j = 0; j < board[i].size(); j++)
         {
-            cout << board[i][j] << " ";
+            cout << board[i][j];
         }
-        cout << endl;
+        cout << " \n";
     }
 }
-
 // Choose what level is to be played
 string chooseLevel()
 {
@@ -131,55 +133,55 @@ string chooseLevel()
     // Ensures that the user enters in the correct level
     do
     {
+        // Prompt user to enter in a level
         cout << "Enter level to play:\n";
         cin >> level;
+        // If statements to change level number to actual level
         if(level == "1") level = "level1.txt";
         else if(level == "2") level = "level2.txt";
         else if(level == "3") level = "level3.txt";
-        
+        // Open the level
         fileReader.open(level);
-
+        // If level could not be found
         if(!fileReader.is_open())
         {
             cout << "Could not open " << level << endl;
         }
-
     } while(!fileReader.is_open());
     // Return the string
     return level;
 }
-
 // Initialize the game
 void playGame(vector<vector<char>> boardAnswers,
-vector<vector<char> > boardUnderscores)
+vector<vector<char>> boardUnderscores)
 {
-
     int remainingGuesses = 5;
     vector<char> guesses;
-    bool foundLetter;
+    bool foundLetter = false;
     // Do while loop to ensure the game is played until answers found
     // or guesses are gone
     do
     {
+        // Flag to ensure that a letter is found
         foundLetter = false;
+        // Variable to enter in guess
         char guess = ' ';
-        print2dVector(boardUnderscores);
+        print2dBoard(boardUnderscores);
         // Prompt user to enter a letter
-        cout << "Enter a letter:\n";
+        cout << "\nEnter a letter:\n";
         cin >> guess;
         char uppercaseGuess = toupper(guess);
         if(find(guesses.begin(), guesses.end(), uppercaseGuess) != guesses.end())
-        {
-            cout << "The letter is already guessed, try again!\n";   
-        }
+            cout << "\nThe letter is already guessed, try again!\n";  
         else
         {
-            guesses.push_back(toupper(uppercaseGuess));
+            cout << "The letter is not on the board";
+            guesses.push_back(uppercaseGuess);
         }
         // Print updated board to terminal
-        for (int i = 0; i < boardAnswers.size(); i++)
+        for (unsigned int i = 0; i < boardAnswers.size(); i++)
         {
-            for (int j = 0; j < boardAnswers[i].size(); j++)
+            for (unsigned int j = 0; j < boardAnswers[i].size(); j++)
             {
                 if (toupper(guess) == boardAnswers[i][j])
                 {
@@ -191,16 +193,18 @@ vector<vector<char> > boardUnderscores)
         }
         // If a letter is not found, the remaining guesses is reduced
         if(!foundLetter) remainingGuesses -= 1;
-        if((boardUnderscores != boardAnswers) && (remainingGuesses != 0))
-        cout << endl << "Remaining incorrect guesses: " << remainingGuesses << endl;
+        // Ensure that incorrect guesses prints if game hasn't ended
+        if((boardUnderscores != boardAnswers) || (remainingGuesses != 0))
+        cout << "Remaining incorrect guesses: " << remainingGuesses << endl << endl;
     } while ((boardUnderscores != boardAnswers) && (remainingGuesses != 0));
-
+    // Final game announcements prints to terminal
     if(boardUnderscores == boardAnswers)
     {
+        print2dBoard(boardUnderscores);
         cout << "\nCongratulations! you solved the level!\n";
     }
     if(remainingGuesses == 0)
     {
-        cout << "Better luck next time!";
+        cout << "\nBetter luck next time!\n";
     }
 }
