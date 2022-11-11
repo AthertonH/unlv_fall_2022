@@ -45,7 +45,7 @@ vector<vector<char>> replace2(vector<vector<char>> v);
  *
  * @param v - the vector containing the data from the file
  */
-void print2dVector(vector<vector<char>> v);
+void print2dBoard(vector<vector<char>> v);
 
 int main()
 {
@@ -59,20 +59,20 @@ int main()
 
     // print data from files
     cout << "Before replace\n";
-    print2dVector(data1);
+    print2dBoard(data1);
     cout << '\n';
-    print2dVector(data2);
+    print2dBoard(data2);
 
     cout << "------------------------------------------------------------\n";
 
     cout
         << "\nAfter replace using method 1 or replace1\n";
     data1 = replace(data1);
-    print2dVector(data1);
+    print2dBoard(data1);
 
     cout << "\nAfter replace using method 2 or replace2\n";
     data2 = replace2(data2);
-    print2dVector(data2);
+    print2dBoard(data2);
 
     return 0;
 }
@@ -160,7 +160,7 @@ vector<vector<char>> replace2(vector<vector<char>> v)
 }
 
 // print 2d vector
-void print2dVector(vector<vector<char>> v)
+void print2dBoard(vector<vector<char>> v)
 {
     //! this will give hints to help replace1 & 2 function
     //! this is in the book (the free one) -> 307-310. Please read it to understand how it works
