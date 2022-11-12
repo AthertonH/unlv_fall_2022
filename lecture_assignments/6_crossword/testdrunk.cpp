@@ -40,10 +40,11 @@ int main()
     // Initialize 2 boards
     vector<vector<char>> boardUnderscores;
     vector<vector<char>> boardAnswers;
+    bool playAgain = false;
     char answer = ' ';
     // Pretty stuff to make it pretty
     cout << "\n     Welcome to\n\n"
-         << "         W\n"
+         << "         W \n"
          << "     C R O S S\n"
          << "         R\n"
          << "         D\n\n";
@@ -55,18 +56,25 @@ int main()
         boardUnderscores = replace(boardAnswers);
         playGame(boardAnswers, boardUnderscores);
         
-        cout << "Play again? (y/n)\n";
-        cin >> answer;
-        if(toupper(answer) == 'Y')
-            continue;
-        if(toupper(answer) == 'N')
+        do
         {
-            cout << "Thank you for playing CrossWords!";
-            break;
-        }
-        else
-            cout << "Please, answer Y or N.";
-    } while ((answer != 'Y') && (answer != 'N'));
+            cout << "Play again? (y/n)\n";
+            cin >> answer;
+            if(toupper(answer) == 'Y')
+            {
+                playAgain = true;
+                break;
+            }
+            if(toupper(answer) == 'N')
+            {
+                playAgain = false;
+                cout << "Thank you for playing CrossWord!";
+                break;
+            }
+            if((toupper(answer) != 'Y') || (toupper(answer) != 'N'))
+                cout << "Please, answer Y or N.\n";
+        } while ((answer != 'Y') && (answer != 'N'));
+    } while (playAgain);
 
     return 0;
 }
@@ -102,7 +110,7 @@ vector<vector<char>> replace(vector<vector<char> > board)
     // Replace alphas with underscores
     for (unsigned int i = 0; i < board.size(); i++) // Loop rows
     {
-        for (unsigned int j = 0; j < board[i].size(); j++)
+        for (unsigned int j = 0; j < board[i].size(); j++) // Loop columns
         {
             if (isalpha(board[i][j]))
             {
@@ -121,13 +129,14 @@ void print2dBoard(vector<vector<char>> board)
         {
             cout << board[i][j];
         }
-        cout << endl;
+        cout << " \n";
     }
 }
 // Choose what level is to be played
 string chooseLevel()
 {
-    string level = "";
+    int level = 0;
+    string openLevel = "";
     ifstream fileReader;
     ofstream fileWriter;
     // Ensures that the user enters in the correct level
@@ -137,19 +146,22 @@ string chooseLevel()
         cout << "Enter level to play:\n";
         cin >> level;
         // If statements to change level number to actual level
-        if(level == "1") level = "level1.txt";
-        else if(level == "2") level = "level2.txt";
-        else if(level == "3") level = "level3.txt";
-        // Open the level
-        fileReader.open(level);
-        // If level could not be found
-        if(!fileReader.is_open())
+        if(level == 1) openLevel = "level1.txt";
+        else if(level == 2) openLevel = "level2.txt";
+        else if(level == 3) openLevel = "level3.txt";
+        // If statement to ensure player chooses between 1-3
+        if(cin.fail() || level < 1)
         {
-            cout << "Could not open " << level << endl;
+            cout << "Invalid entry!\n";
+            cin.clear();
+            cin.ignore(200, '\n');
         }
+        else if(level != 1 && level != 2 && level != 3) 
+            cout << "Level files could not be found!\n";
+        else fileReader.open(openLevel);
     } while(!fileReader.is_open());
     // Return the string
-    return level;
+    return openLevel;
 }
 // Initialize the game
 void playGame(vector<vector<char>> boardAnswers,
@@ -158,45 +170,49 @@ vector<vector<char>> boardUnderscores)
     int remainingGuesses = 5;
     vector<char> guesses;
     bool foundLetter = false;
+    bool alreadyGuessed = false;
     // Do while loop to ensure the game is played until answers found
     // or guesses are gone
     do
     {
         // Flag to ensure that a letter is found
         foundLetter = false;
+        alreadyGuessed = false;
         // Variable to enter in guess
-        char guess = ' ';
+        string guess = "";
         print2dBoard(boardUnderscores);
         // Prompt user to enter a letter
-        cout << "\nEnter a letter:";
+        cout << "\nEnter a letter:\n";
         cin >> guess;
-        char uppercaseGuess = toupper(guess);
-        if(find(guesses.begin(), guesses.end(), uppercaseGuess) != guesses.end())
+        char guessChar = toupper(guess[0]);
+        if(find(guesses.begin(), guesses.end(), guessChar) != guesses.end())
         {
-            cout << "\nThe letter is already guessed, try again!";  
+            cout << "The letter is already guessed, try again!\n";
+            alreadyGuessed = true;
         }
         else
         {
-            guesses.push_back(uppercaseGuess);
+            guesses.push_back(guessChar);
         }
         // Print updated board to terminal
         for (unsigned int i = 0; i < boardAnswers.size(); i++)
         {
             for (unsigned int j = 0; j < boardAnswers[i].size(); j++)
             {
-                if (toupper(guess) == boardAnswers[i][j])
+                if (guessChar == boardAnswers[i][j])
                 {
-                    boardUnderscores[i][j] = toupper(guess);
+                    boardUnderscores[i][j] = guessChar;
                     // Flag to confirm a letter has been found
                     foundLetter = true; 
                 }
             }
         }
-        // If a letter is not found, the remaining guesses is reduced
-        if(!foundLetter) remainingGuesses -= 1;
-        // Ensure that incorrect guesses prints if game hasn't ended
-        if((boardUnderscores != boardAnswers) && (remainingGuesses != 0))
-        cout << endl << "Remaining incorrect guesses: " << remainingGuesses << endl << endl;
+        // If a letter is not found, the remaining guesses is reduced and the user is prompted that
+        // the letter is not on the board
+        if(!foundLetter && !alreadyGuessed) remainingGuesses -= 1 && cout << "The letter is not on the board\n";
+        // Ensure that incorrect guesses prints if game hasn't ended and letter hasn't been found
+        if((boardUnderscores != boardAnswers) || (remainingGuesses != 0))
+        cout << "Remaining incorrect guesses: " << remainingGuesses << endl << endl;
     } while ((boardUnderscores != boardAnswers) && (remainingGuesses != 0));
     // Final game announcements prints to terminal
     if(boardUnderscores == boardAnswers)
@@ -206,6 +222,7 @@ vector<vector<char>> boardUnderscores)
     }
     if(remainingGuesses == 0)
     {
+        print2dBoard(boardUnderscores);
         cout << "\nBetter luck next time!\n";
     }
 }
