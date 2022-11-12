@@ -206,10 +206,11 @@ vector<vector<char>> boardUnderscores)
         }
         // If a letter is not found, the remaining guesses is reduced and the user is prompted that
         // the letter is not on the board
-        if(!foundLetter && !alreadyGuessed) remainingGuesses -= 1 && cout << "The letter is not on the board\n";
+        if(!foundLetter && !alreadyGuessed) 
+            remainingGuesses -= 1 && cout << "The letter is not on the board\n";
         // Ensure that incorrect guesses prints if game hasn't ended and letter hasn't been found
         if((boardUnderscores != boardAnswers) || (remainingGuesses != 0))
-        cout << "Remaining incorrect guesses: " << remainingGuesses << endl << endl;
+            cout << "Remaining incorrect guesses: " << remainingGuesses << endl << endl;
     } while ((boardUnderscores != boardAnswers) && (remainingGuesses != 0));
     // Final game announcements prints to terminal
     if(boardUnderscores == boardAnswers)
