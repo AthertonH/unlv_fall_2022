@@ -34,13 +34,13 @@ void print2dBoard(vector<vector<char>> board);
 string chooseLevel();
 void playGame();
 void playGame(vector<vector<char>> boardUnderscores,vector<vector<char> > boardAnswers);
+bool endGame();
 
 int main()
 {
     // Initialize 2 boards
     vector<vector<char>> boardUnderscores;
     vector<vector<char>> boardAnswers;
-    bool playAgain = false;
     char answer = ' ';
     // Pretty stuff to make it pretty
     cout << "\n     Welcome to\n\n"
@@ -55,26 +55,7 @@ int main()
         cout << endl;
         boardUnderscores = replace(boardAnswers);
         playGame(boardAnswers, boardUnderscores);
-        
-        do
-        {
-            cout << "Play again? (y/n)\n";
-            cin >> answer;
-            if(toupper(answer) == 'Y')
-            {
-                playAgain = true;
-                break;
-            }
-            if(toupper(answer) == 'N')
-            {
-                playAgain = false;
-                cout << "Thank you for playing CrossWord!";
-                break;
-            }
-            if((toupper(answer) != 'Y') || (toupper(answer) != 'N'))
-                cout << "Please, answer Y or N.\n";
-        } while ((answer != 'Y') && (answer != 'N'));
-    } while (playAgain);
+    } while (endGame());
 
     return 0;
 }
@@ -97,10 +78,7 @@ vector<vector<char>> readData(string fileName)
             board.push_back(row);
         }
     }
-    else
-    {
-        cout << "File not found\n";
-    }
+    else cout << "File not found\n";
     file.close();
     return board;
 }
@@ -209,20 +187,42 @@ vector<vector<char>> boardUnderscores)
         }
         // If a letter is not found, the remaining guesses is reduced and the user is prompted that
         // the letter is not on the board
-        if(!foundLetter && !alreadyGuessed) remainingGuesses -= 1 && cout << "The letter is not on the board\n";
+        if(!foundLetter && !alreadyGuessed) 
+            remainingGuesses -= 1 && cout << "The letter is not on the board\n";
         // Ensure that incorrect guesses prints if game hasn't ended and letter hasn't been found
         if((boardUnderscores != boardAnswers) || (remainingGuesses != 0))
-        cout << "Remaining incorrect guesses: " << remainingGuesses << endl << endl;
+            cout << "Remaining incorrect guesses: " << remainingGuesses << endl << endl;
     } while ((boardUnderscores != boardAnswers) && (remainingGuesses != 0));
     // Final game announcements prints to terminal
     if(boardUnderscores == boardAnswers)
     {
         print2dBoard(boardUnderscores);
         cout << "\nCongratulations! you solved the level!\n";
-    }
+    }   
     if(remainingGuesses == 0)
     {
         print2dBoard(boardUnderscores);
         cout << "\nBetter luck next time!\n";
     }
+}
+
+bool endGame()
+{
+    char answer = ' ';
+    do
+    {
+        cout << "Play again? (y/n)\n";
+        cin >> answer;
+        if(toupper(answer) == 'Y')
+        {
+            return true;
+        }
+        if(toupper(answer) == 'N')
+        {
+            cout << "Thank you for playing CrossWord!";
+            return false;
+        }
+        if((toupper(answer) != 'Y') || (toupper(answer) != 'N'))
+            cout << "Invalid entry!\n";
+    } while ((answer != 'Y') && (answer != 'N'));
 }
