@@ -8,7 +8,6 @@
     
     99% comment passing D': hopefully this gets me to 100%.
 */
-
 #include <iostream>
 #include <fstream>
 #include <iomanip>
