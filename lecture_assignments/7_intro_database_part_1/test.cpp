@@ -61,19 +61,19 @@ int main(int argc, char const *argv[])
 	
 	getCredentials(argc, argv, user, pass);
 
-	if (validateCredentials(user, pass)) 
-	{
-        // 1.2 call get header
-	    // YOUR CODE HERE
+	// if (validateCredentials(user, pass)) 
+	// {
+    //     // 1.2 call get header
+	//     // YOUR CODE HERE
 		
         
 
-        // 2.1 call the loop to get commands from the user
-	    // YOUR CODE HERE
+    //     // 2.1 call the loop to get commands from the user
+	//     // YOUR CODE HERE
 
 
 
-    }
+    // }
 
 	return 0;
 }
@@ -182,13 +182,13 @@ void getCredentials(int argc, char const *argv[], string &user, string &pass)
 }
 
 // Fill this function out for section 1.2
-bool validateCredentials(string u, string p) {
-	// 1.2 make sure proper user/pass
-	// YOUR CODE HERE
+// bool validateCredentials(string u, string p) {
+// 	// 1.2 make sure proper user/pass
+// 	// YOUR CODE HERE
 
 
 
-}
+// }
 
 // 2.1 add getInput() function
 // YOUR CODE HERE
