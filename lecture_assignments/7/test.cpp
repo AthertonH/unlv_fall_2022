@@ -53,13 +53,18 @@ bool validateCredentials(string, string);
 // sections 2/3 add function prototypes
 // YOUR CODE HERE
 
+// C-string is an array of chars that is null terminated \0
+// Command line arguments use C-strings
+// Argc stores the count of how many arguments there are, +1 for the name of program
+// Argv is an array of C-strings. Each argument is stored in argv as a C-String
 
 
 int main(int argc, char const *argv[]) 
 {
 	string user = "", pass = "";
-	
-	getCredentials(argc, argv, user, pass);
+
+	getCredentials(argc, argv[1], user, pass);
+
 
 	// if (validateCredentials(user, pass)) 
 	// {
@@ -178,7 +183,8 @@ bool printTable(string file)
 // Fill this function out for section 1.1
 void getCredentials(int argc, char const *argv[], string &user, string &pass) 
 {
-	cout << user << endl << pass;
+	user = argv[1];
+	pass = argv[2];
 }
 
 // Fill this function out for section 1.2

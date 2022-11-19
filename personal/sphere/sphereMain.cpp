@@ -9,6 +9,8 @@ double getCircleArea(double radius)
 
 int main(int argc, char* argv[])
 {
+	cout << argc;
+
 	if(argc>1)
 	{
 		cout << "Circle Area: " << getCircleArea(atof(argv[1]));
