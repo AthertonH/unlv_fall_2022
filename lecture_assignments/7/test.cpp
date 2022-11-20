@@ -63,7 +63,7 @@ int main(int argc, char const *argv[])
 {
 	string user = "", pass = "";
 
-	getCredentials(argc, argv[1], user, pass);
+	getCredentials(argc, argv, user, pass);
 
 
 	// if (validateCredentials(user, pass)) 
