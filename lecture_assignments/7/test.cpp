@@ -63,6 +63,8 @@ int main(int argc, char const *argv[])
 {
 	string user = "", pass = "";
 
+	if(argc != 3) cout << USAGE_MSG;
+
 	getCredentials(argc, argv, user, pass);
 
 
@@ -185,6 +187,7 @@ void getCredentials(int argc, char const *argv[], string &user, string &pass)
 {
 	user = argv[1];
 	pass = argv[2];
+	cout << "User: " << argv[1] << endl << "Pass: " << argv[2] << endl;
 }
 
 // Fill this function out for section 1.2
