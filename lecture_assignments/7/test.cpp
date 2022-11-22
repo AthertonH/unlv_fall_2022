@@ -68,19 +68,19 @@ int main(int argc, char const *argv[])
 	getCredentials(argc, argv, user, pass);
 
 
-	// if (validateCredentials(user, pass)) 
-	// {
-    //     // 1.2 call get header
-	//     // YOUR CODE HERE
+	if (validateCredentials(user, pass)) 
+	{
+        // 1.2 call get header
+	    // YOUR CODE HERE
 		
         
 
-    //     // 2.1 call the loop to get commands from the user
-	//     // YOUR CODE HERE
+        // 2.1 call the loop to get commands from the user
+	    // YOUR CODE HERE
 
 
 
-    // }
+    }
 
 	return 0;
 }

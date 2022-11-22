@@ -50,21 +50,23 @@ void header();
 string toLower(string);
 void getCredentials(int, char const *[], string&, string&);
 bool validateCredentials(string, string);
-// sections 2/3 add function prototypes
-// YOUR CODE HERE
+vector<string> getInput();
+string validateArguments(vector<string> args);
+void executeCommand(vector<string> args);
+
 
 
 
 int main(int argc, char const *argv[]) 
 {
 	string user = "", pass = "";
-	
+	if(argc != 3) cout << USAGE_MSG;
+
 	getCredentials(argc, argv, user, pass);
 
 	if (validateCredentials(user, pass)) 
 	{
-        // 1.2 call get header
-	    // YOUR CODE HERE
+        header();
 		
         
 
@@ -178,35 +180,55 @@ bool printTable(string file)
 // Fill this function out for section 1.1
 void getCredentials(int argc, char const *argv[], string &user, string &pass) 
 {
-	cout << user << endl << pass;
+	user = argv[1];
+	pass = argv[2];
+	cout << "User: " << argv[1] << endl << "Pass: " << argv[2] << endl;
 }
 
 // Fill this function out for section 1.2
-bool validateCredentials(string u, string p) {
-	// 1.2 make sure proper user/pass
-	// YOUR CODE HERE
-
-
-
+bool validateCredentials(string u, string p) 
+{
+	if(u == USER && p == PASS)
+	{
+		cout << WELCOME_MSG + USER + "\n";
+		return true;
+	}
+	else
+	{
+		cout << INVALID_CREDENTIALS_MSG;
+		return false;
+	}
 }
 
 // 2.1 add getInput() function
-// YOUR CODE HERE
+vector<string> getInput()
+{
+
+}
 
 
 
 // 2.1 add validateArguments(vector<string>) function
-// YOUR CODE HERE
+string validateArguments(vector<string> args)
+{
+
+}
 
 
 
 // 2.1 add executeCommand(vector<string>) function
-// YOUR CODE HERE
+void exectueCommand(vector<string> args)
+{
+
+}
 
 
 
 // 2.1 add commandLoop() function
-// YOUR CODE HERE
+void commandLoop()
+{
+
+}
 
 
 
