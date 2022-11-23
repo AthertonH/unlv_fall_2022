@@ -6,6 +6,13 @@
     their letter grade.
     Output: The terminal will output the students first name, last name, number they 
     entered, and the equivalent letter grade.
+
+    What does a storm cloud wear under his raincoat?
+    Thunderwear.
+
+    Have you ever had a dream that you, um, you had, your, you- you could, 
+    you’ll do, you- you wants, you, you could do so, you- you’ll do, you could- 
+    you, you want, you want them to do you so much you could do anything?
 */
 
 #include <iostream>
@@ -32,6 +39,8 @@ int main()
     getStudentData(myStudent);
     getLetterGrade(myStudent);
     printStudentData(myStudent);
+
+    return 0;
 }
 
 // Function to receive the first and last name of the student
@@ -57,6 +66,7 @@ void getLetterGrade(studentType& student)
         cout << endl << "Enter a grade\n**";
         cin >> grade;
 
+        // Shout out to Caelan for helping me with the cin.fail() ._.
         if(cin.fail())
         {
             cin.clear();
@@ -64,7 +74,7 @@ void getLetterGrade(studentType& student)
             cout << endl << "Error: Invalid grade";
             continue;
         }
-        else if(student.grade < 0 || student.grade > 4)
+        if(grade < 0 || grade > 4)
         {
             cout << endl << "Error: Invalid grade";
             continue;
@@ -77,18 +87,23 @@ void getLetterGrade(studentType& student)
     {
         case 0:
             student.letterGrade = 'F';
+            student.grade = 0;
             break;
         case 1:
             student.letterGrade = 'D';
+            student.grade = 1;
             break;
         case 2:
             student.letterGrade = 'C';
+            student.grade = 2;
             break;
         case 3:
             student.letterGrade = 'B';
+            student.grade = 3;
             break;
         case 4:
             student.letterGrade = 'A';
+            student.grade = 4;
             break;
     }
 }
