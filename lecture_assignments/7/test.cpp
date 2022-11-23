@@ -50,28 +50,24 @@ void header();
 string toLower(string);
 void getCredentials(int, char const *[], string&, string&);
 bool validateCredentials(string, string);
-// sections 2/3 add function prototypes
-// YOUR CODE HERE
+vector<string> getInput();
+string validateArguments(vector<string> args);
+void executeCommand(vector<string> args);
+void commandLoop();
 
-// C-string is an array of chars that is null terminated \0
-// Command line arguments use C-strings
-// Argc stores the count of how many arguments there are, +1 for the name of program
-// Argv is an array of C-strings. Each argument is stored in argv as a C-String
+
 
 
 int main(int argc, char const *argv[]) 
 {
 	string user = "", pass = "";
-
 	if(argc != 3) cout << USAGE_MSG;
 
 	getCredentials(argc, argv, user, pass);
 
-
 	if (validateCredentials(user, pass)) 
 	{
-        // 1.2 call get header
-	    // YOUR CODE HERE
+        header();
 		
         
 
@@ -191,31 +187,55 @@ void getCredentials(int argc, char const *argv[], string &user, string &pass)
 }
 
 // Fill this function out for section 1.2
-// bool validateCredentials(string u, string p) {
-// 	// 1.2 make sure proper user/pass
-// 	// YOUR CODE HERE
+bool validateCredentials(string u, string p) 
+{
+	if(u == USER && p == PASS)
+	{
+		cout << WELCOME_MSG + USER + "\n";
+		return true;
+	}
+	else
+	{
+		cout << INVALID_CREDENTIALS_MSG;
+		return false;
+	}
+}
 
-
-
-// }
-
+// getline, lowercase every word, push back word to the vector, return the vector
 // 2.1 add getInput() function
-// YOUR CODE HERE
+vector<string> getInput()
+{
+	vector<string> hold;
+
+	return hold;
+
+
+}
 
 
 
 // 2.1 add validateArguments(vector<string>) function
-// YOUR CODE HERE
+string validateArguments(vector<string> args)
+{
+
+}
 
 
 
 // 2.1 add executeCommand(vector<string>) function
-// YOUR CODE HERE
+void exectueCommand(vector<string> args)
+{
+
+}
 
 
 
 // 2.1 add commandLoop() function
-// YOUR CODE HERE
+void commandLoop()
+{
+	getInput();
+
+}
 
 
 

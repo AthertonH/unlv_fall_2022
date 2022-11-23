@@ -53,6 +53,7 @@ bool validateCredentials(string, string);
 vector<string> getInput();
 string validateArguments(vector<string> args);
 void executeCommand(vector<string> args);
+void commandLoop();
 
 
 
@@ -227,6 +228,7 @@ void exectueCommand(vector<string> args)
 // 2.1 add commandLoop() function
 void commandLoop()
 {
+	getInput();
 
 }
 
