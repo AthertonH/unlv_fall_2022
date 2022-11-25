@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
 
 struct purchaseType
@@ -12,6 +13,7 @@ struct purchaseType
 };
 
 void openFile(ifstream&, string);
+void readFile(ifstream&, purchaseType);
 
 int main()
 {   
@@ -19,15 +21,12 @@ int main()
     string prompt = "Enter file name\n**";
 
     openFile(iFile, prompt);
-
-
-
+    
 }
 
 void openFile(ifstream& iFile, string prompt)
 {
     string fileName = "";
-
     do
     {
         cout << prompt;
@@ -40,5 +39,15 @@ void openFile(ifstream& iFile, string prompt)
         }
 
     } while(!iFile.is_open());
-    
+}
+
+void readFile(ifstream& iFile, purchaseType purchases[])
+{
+
+    int count = 0;
+
+    while(!iFile.eof())
+    {
+        getline(iFile, purchases[count].customerID, ',');
+    }
 }
