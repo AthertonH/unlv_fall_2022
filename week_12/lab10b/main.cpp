@@ -18,10 +18,11 @@ void readFile(ifstream&, purchaseType);
 int main()
 {   
     ifstream iFile;
-    string prompt = "Enter file name\n**";
+    purchaseType purchases[10];
 
+    string prompt = "Enter file name\n**";
     openFile(iFile, prompt);
-    
+
 }
 
 void openFile(ifstream& iFile, string prompt)
@@ -43,11 +44,24 @@ void openFile(ifstream& iFile, string prompt)
 
 void readFile(ifstream& iFile, purchaseType purchases[])
 {
-
     int count = 0;
+
+    string priceString = "";
+    string qtyPurchasedString = "";
+    string taxRateString = "";
 
     while(!iFile.eof())
     {
         getline(iFile, purchases[count].customerID, ',');
+        getline(iFile, purchases[count].productName, ',');
+        getline(iFile, priceString, ',');
+        getline(iFile, qtyPurchasedString, ',');
+        getline(iFile, taxRateString, '\n');
+        purchases[count].price = stod(priceString);
+        purchases[count].qtyPurchased = stoi(qtyPurchasedString);
+        purchases[count].price = stod(taxRateString);
+        count++;
     }
+
+    
 }
