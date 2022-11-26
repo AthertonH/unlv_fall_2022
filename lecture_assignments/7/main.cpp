@@ -4,6 +4,7 @@
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
@@ -68,6 +69,7 @@ int main(int argc, char const *argv[])
 	if (validateCredentials(user, pass)) 
 	{
         header();
+		commandLoop();
 		
         
 
@@ -201,33 +203,60 @@ bool validateCredentials(string u, string p)
 	}
 }
 
+
+// LEFT OFF HERE. NEED TO PUSH THE ARGUMENTS BACK
 // 2.1 add getInput() function
 vector<string> getInput()
 {
+	vector<string> arguments {};
+	string userInput = "";
 
+	do
+	{
+		cout << COMMAND_PROMPT;
+		getline(cin, userInput);
+		if(userInput == "QUIT")
+			break;
+		arguments.push_back(userInput);
+		
+		// LOOP USED FOR TESTING
+		cout << "Arguments: ";
+		for(int i = 0; i < arguments.size(); i++)
+		{
+			cout << arguments[i] << ", ";
+		}
+		cout << endl;
+		// LOOP USED FOR TESTING
+		
+	} while (true);
+	
+	return arguments;
 }
 
 
 
 // 2.1 add validateArguments(vector<string>) function
-string validateArguments(vector<string> args)
-{
+// string validateArguments(vector<string> args)
+// {
 
-}
+// }
 
 
 
 // 2.1 add executeCommand(vector<string>) function
-void exectueCommand(vector<string> args)
-{
+// void exectueCommand(vector<string> args)
+// {
 
-}
+// }
 
 
 
 // 2.1 add commandLoop() function
 void commandLoop()
 {
+	vector<string> arguments = {};
+
+
 	getInput();
 
 }
