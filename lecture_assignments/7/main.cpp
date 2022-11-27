@@ -3,7 +3,9 @@
 #include <fstream>
 #include <vector>
 #include <stdio.h>
+
 #include <algorithm>
+#include <cctype>
 #include <string>
 
 using namespace std;
@@ -203,8 +205,6 @@ bool validateCredentials(string u, string p)
 	}
 }
 
-
-// LEFT OFF HERE. NEED TO PUSH THE ARGUMENTS BACK
 // 2.1 add getInput() function
 vector<string> getInput()
 {
@@ -215,18 +215,13 @@ vector<string> getInput()
 	{
 		cout << COMMAND_PROMPT;
 		getline(cin, userInput);
-		if(userInput == "QUIT")
+
+		// Convert user inputted string into all lowercase
+		toLower(userInput);
+
+		if(userInput == "quit")
 			break;
 		arguments.push_back(userInput);
-		
-		// LOOP USED FOR TESTING
-		cout << "Arguments: ";
-		for(int i = 0; i < arguments.size(); i++)
-		{
-			cout << arguments[i] << ", ";
-		}
-		cout << endl;
-		// LOOP USED FOR TESTING
 		
 	} while (true);
 	
@@ -236,18 +231,31 @@ vector<string> getInput()
 
 
 // 2.1 add validateArguments(vector<string>) function
-// string validateArguments(vector<string> args)
-// {
+string validateArguments(vector<string> args)
+{
+	// LOOP USED FOR TESTING
+	cout << "Arguments: ";
+	for(int i = 0; i < args.size(); i++)
+	{
+		if(args[i] == args.back())
+			cout << args[i];
+		else
+			cout << args[i] << ", ";
+	}
+	cout << endl;
+	// LOOP USED FOR TESTING
 
-// }
+	return "";
+
+}
 
 
 
 // 2.1 add executeCommand(vector<string>) function
-// void exectueCommand(vector<string> args)
-// {
+void exectueCommand(vector<string> args)
+{
 
-// }
+}
 
 
 
@@ -256,8 +264,7 @@ void commandLoop()
 {
 	vector<string> arguments = {};
 
-
-	getInput();
+	validateArguments(getInput());
 
 }
 
