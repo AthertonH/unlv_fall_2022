@@ -254,7 +254,7 @@ string validateArguments(vector<string> args)
 // 2.1 add executeCommand(vector<string>) function
 void exectueCommand(vector<string> args)
 {
-
+	cout << args[0];
 }
 
 
@@ -268,7 +268,8 @@ void commandLoop()
 
 }
 
-
+// 2.3 TO DO THIS, ARGUMENTS MUST BE PASSED TO THE EXECUTECOMMAND FUNCTION SO THE
+// COMMAND CAN BE EXECTUED
 
 /*
 	DO NOT REMOVE
