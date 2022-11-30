@@ -50,9 +50,10 @@ void readFile(ifstream& iFile, purchaseType purchases[])
 {
     int count = 0;
 
-    string priceString = "";
-    string qtyPurchasedString = "";
-    string taxRateString = "";
+    double priceDigit = 0.0;
+    int quantityDigit = 0;
+    double taxRateDigit = 0.0;
+    double total = 0.0;
 
     while(count < 10)
     {
@@ -63,13 +64,7 @@ void readFile(ifstream& iFile, purchaseType purchases[])
         getline(iFile, taxRateString, '\n');
         purchases[count].price = stod(priceString);
         purchases[count].qtyPurchased = stoi(qtyPurchasedString);
-        purchases[count].taxRate = stod(taxRateString);
-
-        double priceQuantity = purchases[count].price * 
-        purchases[count].qtyPurchased;
-        purchases[count].total = priceQuantity + 
-        (priceQuantity * purchases[count].taxRate);
-
+        purchases[count].price = stod(taxRateString);
         count++;
     }  
 }
@@ -78,28 +73,23 @@ void printPurchaseData(purchaseType purchases[], int size)
 {
     int count = 0;
 
+
     string template1 = "+-------------+--------------+-------"
     "+----------+----------+-------+\n";
     string template2 = "| Customer ID | Product Name | Price |"
     "Quantity | Tax Rate | Total |\n";
-
+    
     string template3 = "|" + purchases[count].customerID + "|" + 
-    purchases[count].productName + "|" + to_string(purchases[count].price) +
-    "|" + to_string(purchases[count].qtyPurchased) + "|" +
-    to_string(purchases[count].taxRate) + "|" + to_string(purchases[count].total) +
-    "\n";
+    purchases[count].productName + "|" + purchases[count].price +
+    "|" + purchases[count].qtyPurchased + "|" +
+    purchases[count].taxRate + "|";
 
     cout << template1 << template2 << template1;
 
-    // Print out the vector to a table using iomanip
     while (count < 10)
     {
-        cout << "|" + purchases[count].customerID + "|" + 
-        purchases[count].productName + "|" + to_string(purchases[count].price) +
-        "|" + to_string(purchases[count].qtyPurchased) + "|" +
-        to_string(purchases[count].taxRate) + "|" + 
-        to_string(purchases[count].total) + "\n";
-        count++;
+        cout << template3;
+        count ++;
     }
     
     

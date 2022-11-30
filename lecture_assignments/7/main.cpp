@@ -73,12 +73,8 @@ int main(int argc, char const *argv[])
         header();
 		commandLoop();
 		
-        
-
         // 2.1 call the loop to get commands from the user
 	    // YOUR CODE HERE
-
-
 
     }
 
@@ -249,12 +245,11 @@ string validateArguments(vector<string> args)
 
 }
 
-
-
 // 2.1 add executeCommand(vector<string>) function
 void exectueCommand(vector<string> args)
 {
-	cout << args[0];
+	for(int i = 0; i < args.size(); i++)
+		cout << args.at(i) << ' ';
 }
 
 
@@ -262,11 +257,15 @@ void exectueCommand(vector<string> args)
 // 2.1 add commandLoop() function
 void commandLoop()
 {
-	vector<string> arguments = {};
+	vector<string> arguments = getInput();
+	validateArguments(arguments);
+	executeCommand(arguments);
 
-	validateArguments(getInput());
+	
 
 }
+
+// > should be inside commandLoop()
 
 // 2.3 TO DO THIS, ARGUMENTS MUST BE PASSED TO THE EXECUTECOMMAND FUNCTION SO THE
 // COMMAND CAN BE EXECTUED
