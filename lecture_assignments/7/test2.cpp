@@ -56,6 +56,7 @@ void header();
 string toLower(string);
 void getCredentials(int, char const *[], string&, string&);
 bool validateCredentials(string, string);
+bool validateCharacters(string);
 vector<string> getInput();
 string validateArguments(vector<string> args);
 void executeCommand(vector<string> args);
@@ -204,6 +205,19 @@ bool validateCredentials(string u, string p)
 	}
 }
 
+bool validateCharacters(string testString)
+{
+    for(int i = 0; i < testString.length(); i++)
+    {
+        // Looping through the name to validate characters
+        if((testString[i] < 96 || testString[i] > 123) &&
+        (testString[i] != '-') &&
+        (testString[i] != '_'))
+            return true;
+    }
+    return false;
+}
+
 // 2.1 add getInput() function
 vector<string> getInput()
 {
@@ -234,9 +248,10 @@ string validateArguments(vector<string> args)
 	ifstream fileReader;
     ofstream fileWriter;
     string fileName;
+	bool invalidCharacter;
 	bool flag;
 
-	// Quit Command
+	// QUIT COMMAND
     if(args[0] == QUIT_CMD)
     {
         if(args.size() == 1)
@@ -244,48 +259,54 @@ string validateArguments(vector<string> args)
         else
             return QUIT_ARG_CNT_MSG;
 	}
-	// Create CMD Command
+
+	// CREATE CMD COMMAND
 	if(args[0] == CREATE_CMD)
+	{
+		if(args.size() == 3)
 		{
-			if(args.size() == 3)
+			// If characters are invalid, try to open the file
+			if(validateCharacters(args[1]) == true)
 			{
-				// <table_name> must be char
-				char newChar = ' ';
-				if(args[1].length() == 1)
-				{
-					newChar = args[1][0];
-					// Ensure the char is within the range of valid chars, if so
-					// set the flag to true
-					if(newChar > 96 && newChar < 123)
-						flag = true;
-					else if(newChar > 47 && newChar < 72)
-						flag = true;
-					else if(newChar == '-' || newChar == '_')
-						flag = true;
-						// If the flag is true, try to open the file. If it
-						// successfully opens, the file exists, and a message
-						// will be outputted to the user.
-						if(flag == true)
-						{
-							fileReader.open(TABLE_FILE_DIRECTORY + args[2]
-							+ TABLE_FILETYPE);
-							if(!fileReader.is_open())
-							{
-								return VALID_ARG_MSG;
-							}
-							else
-								return CREATE_EXISTS_MSG;
-						}
-					else
-						return CREATE_INV_TABLE_NAME_MSG;
-				}
+				return CREATE_INV_TABLE_NAME_MSG;
 			}
 			else
-				return CREATE_ARG_CNT_MSG;
+			{
+				// Try to open the file
+				fileReader.open(TABLE_FILE_DIRECTORY + args[1] + TABLE_FILETYPE);
+				// If the file successfully opens, that means it exists
+				if(fileReader.is_open())
+				{
+					return CREATE_EXISTS_MSG;
+				}
+				// If it doesn't open, then it is valid and can be made
+				else
+				{
+					// If the <attribute_list> contains a ',' before or at the end
+					// of the command, a message will be outputted to the user
+					if(args[2][0] == ',' || args[2].back() == ',')
+						return CREATE_INV_HEADERS_MSG;
+
+					// Iterate through <attribute_list> to verify the characters
+					// are valid
+                    if(validateCharacters(args[2]) == true)
+                    {
+// THIS IS WHERE I LEFT OFF. I MUST VALIDATE THE CHARACTERS FOR THE ATTRIBUTE LIST
+// THEN I MUST GO FROM THERE. 3.2 SECTION 4.
+                    }
+					// **Else, all flags are valid and the table can be created**
+					else
+						return VALID;
+				}
+			}		
 		}
-	// Invalid command message
-    else
-        return INV_CMD_MSG;
+		else
+			return CREATE_ARG_CNT_MSG;
+	}
+
+	// INVALID COMMAND MESSAGE
+	else
+		return INV_CMD_MSG;
 }
 
 // 2.1 add executeCommand(vector<string>) function
