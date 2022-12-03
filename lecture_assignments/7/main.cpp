@@ -1,9 +1,20 @@
+/*
+    Name: Harrison Atherton, 5005662748, 1016, #7
+    Description: A database that receives input from users. A table will be 
+	printed to the user depending on what tables are within the databaes, and
+	what the headers are within the databse
+    Input: The user is able to enter different commands that can be executed.
+	If the command does not meet the proper condition, the user will be noticed
+	and the program will continue until it is told to quit
+    Output: A table that includes all other tables, and keeps track of what tables
+	have been created.
+
+*/
 #include <iostream>
 #include <iomanip>
 #include <fstream>
 #include <vector>
 #include <stdio.h>
-
 
 #include <algorithm>
 #include <cctype>
@@ -56,6 +67,8 @@ void header();
 string toLower(string);
 void getCredentials(int, char const *[], string&, string&);
 bool validateCredentials(string, string);
+bool validateCharacters(string);
+void removeString(string, string);
 vector<string> getInput();
 string validateArguments(vector<string> args);
 void executeCommand(vector<string> args);
@@ -170,7 +183,7 @@ bool printTable(string file)
 		for (int i = 0; i < colCnt; i++)
 			cout << "+" << setw(widths[i] + 3);
 		cout << "+" << endl;
-		cout << rowCnt - 1 << " row(s) in set.\n";
+		cout << rowCnt - 1 << " row(s) in set.";
 		return true;
 	}
 	return false;
@@ -183,8 +196,6 @@ void getCredentials(int argc, char const *argv[], string &user, string &pass)
 	user = argv[1];
 	// argv[2] represents password
 	pass = argv[2];
-	// Print username and password to the terminal
-	cout << "User: " << argv[1] << endl << "Pass: " << argv[2] << endl;
 }
 
 // Fill this function out for section 1.2
@@ -197,20 +208,62 @@ bool validateCredentials(string u, string p)
 		return true;
 	}
 	// Print out invalid credentials message to terminal, return false
-	else
+	cout << INVALID_CREDENTIALS_MSG;
+	return false;
+}
+
+bool validateCharacters(string testString)
+{
+    for(unsigned int i = 0; i < testString.length(); i++)
+    {
+        // Looping through the name to validate characters
+        if(testString[i] < 96 || testString[i] > 123)
+			return true;
+		if(testString[i] != '-')
+			return true;
+        if(testString[i] != '_')  
+			return true;
+        if(testString[i] == ',' && testString[i+1] == ',')
+			return true;
+    }
+    return false;
+}
+
+void removeString(string path, string eraseLine) 
+{
+    ifstream fileReader;
+	ofstream fileWriter;
+    fileReader.open(path);
+	string line = "";
+    
+
+    // Opening a temporary file
+    fileWriter.open("temporaryFile.csv");
+
+    while (getline(fileReader, line)) 
 	{
-		cout << INVALID_CREDENTIALS_MSG;
-		return false;
+		// Writing all lines except the one we're deleting
+        if (line != eraseLine)
+        fileWriter << line << endl;
 	}
+        
+	// Renaming the temporary file to the original file
+	const char *newFile = path.c_str();
+    remove(newFile);
+    rename("temporaryFile.csv", newFile);
+
+    // Closing the files
+    fileWriter.close();
+    fileReader.close();
 }
 
 // 2.1 add getInput() function
 vector<string> getInput()
 {
+	cout << COMMAND_PROMPT;
 	vector<string> arguments {};
 	string userInput = "";
 
-	cout << COMMAND_PROMPT;
 	getline(cin, userInput);
 	// Convert user inputted string into all lowercase
     // Split the strings using stringstream
@@ -219,9 +272,8 @@ vector<string> getInput()
     {
         string substr;
         getline(s_stream, substr, ' ');
-        arguments.push_back(toLower(substr));
+        arguments.push_back(substr);
     }
-
     // Return individual strings
 	return arguments;
 }
@@ -229,71 +281,152 @@ vector<string> getInput()
 // 2.1 add validateArguments(vector<string>) function
 string validateArguments(vector<string> args)
 {
-	cout << "inside validateArguments()" << endl;
-	
 	ifstream fileReader;
-    ofstream fileWriter;
     string fileName;
-	bool flag;
 
-	// Quit Command
-    if(args[0] == QUIT_CMD)
+
+	// ****QUIT COMMAND****
+    if(toLower(args[0]) == QUIT_CMD)
     {
         if(args.size() == 1)
             return VALID_ARG_MSG;
-        else
-            return QUIT_ARG_CNT_MSG;
+        return QUIT_ARG_CNT_MSG;
 	}
-	// Create CMD Command
-	if(args[0] == CREATE_CMD)
+
+	// ****CREATE CMD COMMAND****
+	if(toLower(args[0]) == CREATE_CMD)
+	{
+		if(args.size() == 3)
 		{
-			if(args.size() == 3)
-			{
-				// <table_name> must be char
-				char newChar = ' ';
-				if(args[1].length() == 1)
-				{
-					newChar = args[1][0];
-					// Ensure the char is within the range of valid chars, if so
-					// set the flag to true
-					if(newChar > 96 && newChar < 123)
-						flag = true;
-					else if(newChar > 47 && newChar < 72)
-						flag = true;
-					else if(newChar == '-' || newChar == '_')
-						flag = true;
-						// If the flag is true, try to open the file. If it
-						// successfully opens, the file exists, and a message
-						// will be outputted to the user.
-						if(flag == true)
-						{
-							fileReader.open(TABLE_FILE_DIRECTORY + args[2]
-							+ TABLE_FILETYPE);
-							if(!fileReader.is_open())
-							{
-								return VALID_ARG_MSG;
-							}
-							else
-								return CREATE_EXISTS_MSG;
-						}
-					else
-						return CREATE_INV_TABLE_NAME_MSG;
-				}
-			}
-			else
-				return CREATE_ARG_CNT_MSG;
+			// If characters are invalid, try to open the file
+			if(validateCharacters(args[1]) == true)
+				return CREATE_INV_TABLE_NAME_MSG;
+			// Try to open the file
+			fileReader.open(TABLE_FILE_DIRECTORY + args[1] + TABLE_FILETYPE);
+			// If the file successfully opens, that means it exists
+			if(fileReader.is_open())
+				return CREATE_EXISTS_MSG;
+			// If it doesn't open, then it is valid and can be made
+			// If the <attribute_list> contains a ',' before or at the end
+			// of the command, a message will be outputted to the user
+			if(args[2][0] == ',' || args[2].back() == ',')
+				return CREATE_INV_HEADERS_MSG;
+			// Iterate through <attribute_list> to verify the characters
+			// are valid
+			if(validateCharacters(args[2]) == true)
+				return CREATE_INV_HEADERS_MSG;
+			// **Else, all flags are valid and the table can be created**
+			return VALID_ARG_MSG;
 		}
-	// Invalid command message
-    else
-        return INV_CMD_MSG;
+		return CREATE_ARG_CNT_MSG;
+	}
+
+    // ****SHOW ALL TABLES COMMAND****
+    if(toLower(args[0]) == SHOW_CMD)
+    {
+        // If size of show cmd is 2
+        if(args.size() == 2)
+        {
+            // Valid
+            if(toLower(args[1]) == SHOW_ARG_1)
+                return VALID_ARG_MSG;
+            // Invalid
+            return SHOW_INV_OPT_MSG;
+        }
+        // If size of show cmd is not 2
+        return SHOW_ARG_CNT_MSG;
+    }
+
+    // ****DELETE A TABLE****
+    if(toLower(args[0]) == DELETE_CMD)
+    {
+        ifstream deleteTable;
+        if(args.size() == 2)
+        {
+            if(args[1] + TABLE_FILETYPE == "tables.csv" )
+                return DELETE_UNDELETABLE_MSG;
+            
+            // Try to open the table
+            deleteTable.open(TABLE_FILE_DIRECTORY + args[1] + TABLE_FILETYPE);
+            // If the table opens return Valid
+            if(deleteTable.is_open())
+            {
+                deleteTable.close();
+                return VALID_ARG_MSG;
+            }
+            // If the table does not open, return invalid
+            return DELETE_INV_TABLE_NAME_MSG;
+        }
+        return DELETE_ARG_CNT_MSG;
+    }
+
+	// ****INVALID COMMAND MESSAGE****
+	return INV_CMD_MSG;
 }
 
 // 2.1 add executeCommand(vector<string>) function
 void executeCommand(vector<string> args)
 {
+	// Main file to write to
+    ofstream fileWriter;
+	// Name of the files that we've created
+    ofstream fileWriterDatabase;
+
+    // ****QUIT THE PROGRAM****
+    if((toLower(args[0]) == QUIT_CMD) && (args.back() == VALID_ARG_MSG))
+	{
+		exit(0);
+	}
 	// Showing what happens inside the function
-	cout << "inside executeCommands()" << endl;
 	cout << args.back();
+
+    // ****WRITE THE TABLE****
+    if((toLower(args[0]) == CREATE_CMD) && (args.back() == VALID_ARG_MSG))
+    {
+		// Variables
+        string fileName = TABLE_FILE_DIRECTORY + args[1] + TABLE_FILETYPE;
+		vector<string> headers = {};
+		stringstream s_stream(args[2]);
+
+        // Seperate args[2] from commas
+    	while(s_stream.good())
+    	{
+        	string substr;
+        	getline(s_stream, substr, ',');
+        	headers.push_back(substr);
+    	}
+
+		// Open the new file
+        fileWriter.open(fileName);
+
+		// Write the headers to the file
+		for(unsigned int i = 0; i < headers.size(); i++)
+			fileWriter << headers[i] << endl;
+
+		// Write the name of the table to the tables file
+        fileWriterDatabase.open(TABLES_TABLE, ios_base::app);
+        fileWriterDatabase << args[1] << endl;
+        cout << args[1] << TABLE_CREATE_SUCCESS_MSG;
+
+        // Close the files
+        fileWriter.close();
+        fileWriterDatabase.close();
+    }
+
+    // ****PRINT THE TABLE****
+    if((toLower(args[0]) == SHOW_CMD) && (args.back() == VALID_ARG_MSG))
+        printTable(TABLES_TABLE);
+
+    // ****DELETE THE TABLE****
+    if((toLower(args[0]) == DELETE_CMD) && (args.back() == VALID_ARG_MSG))
+	{
+		string filepath = "data/" + args[1] + ".csv";
+		// Remove line from table
+		removeString("data/tables.csv", args[1]);
+		// Remove the table
+		remove(filepath.c_str());
+		cout << args[1] << TABLE_DELETE_SUCCESS_MSG;
+	}
 }
 
 // 2.1 add commandLoop() function
@@ -306,10 +439,9 @@ void commandLoop()
 		string newArgument = validateArguments(arguments);
 		arguments.push_back(newArgument);
 		executeCommand(arguments);
-        cout << endl;
+		cout << endl;
 	} while (true);
 }
-
 
 /*
 	DO NOT REMOVE
