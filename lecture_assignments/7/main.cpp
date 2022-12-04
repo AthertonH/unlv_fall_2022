@@ -8,7 +8,6 @@
 	and the program will continue until it is told to quit
     Output: A table that includes all other tables, and keeps track of what tables
 	have been created.
-
 */
 #include <iostream>
 #include <iomanip>
@@ -67,8 +66,9 @@ void header();
 string toLower(string);
 void getCredentials(int, char const *[], string&, string&);
 bool validateCredentials(string, string);
-bool validateCharacters(string);
-void removeString(string, string);
+bool invalidCharacters(string);
+bool invalidCharactersHeader(string);
+void removeString(string);
 vector<string> getInput();
 string validateArguments(vector<string> args);
 void executeCommand(vector<string> args);
@@ -183,7 +183,7 @@ bool printTable(string file)
 		for (int i = 0; i < colCnt; i++)
 			cout << "+" << setw(widths[i] + 3);
 		cout << "+" << endl;
-		cout << rowCnt - 1 << " row(s) in set.\n";
+		cout << rowCnt - 1 << " row(s) in set.";
 		return true;
 	}
 	return false;
@@ -212,46 +212,61 @@ bool validateCredentials(string u, string p)
 	return false;
 }
 
-bool validateCharacters(string testString)
+bool invalidCharacters(string testString)
 {
-    for(unsigned int i = 0; i < testString.length(); i++)
+	for(unsigned int i = 0; i < testString.length(); i++)
     {
-        // Looping through the name to validate characters
-        if((testString[i] < 96 || testString[i] > 123) &&
-        (testString[i] != '-') &&
-        (testString[i] != '_') && 
-        (testString[i] == ',' && testString[i+1] == ','))
+        if((!isalnum(testString[i])) && (testString[i] != ' ') && 
+        (testString[i] != '-') && testString[i] != '_')
             return true;
     }
-    return false;
+	return false;
 }
 
-void removeString(string path, string eraseLine) 
+bool invalidCharactersHeader(string testString)
 {
+	for(unsigned int i = 0; i < testString.length(); i++)
+    {
+        if((!isalnum(testString[i])) && (testString[i] != ' ') && 
+        (testString[i] != '-') && testString[i] != '_' && 
+        (testString[i] != ','))
+            return true;
+		if(testString[i] == ',' && testString[i+1] == ',')
+			return true;
+    }
+	return false;
+}
+
+void removeString(string removeString)
+{
+    // Variables
     ifstream fileReader;
-	ofstream fileWriter;
-    fileReader.open(path);
-	string line = "";
-    
+    ofstream fileWriter;
+    string filePath = TABLES_TABLE;
+    vector<string> newFile = {};
 
-    // Opening a temporary file
-    fileWriter.open("temporaryFile.csv");
-
-    while (getline(fileReader, line)) 
-	{
-		// Writing all lines except the one we're deleting
-        if (line != eraseLine)
-        fileWriter << line << endl;
-	}
-        
-	// Renaming the temporary file to the original file
-	const char *newFile = path.c_str();
-    remove(newFile);
-    rename("temporaryFile.csv", newFile);
-
-    // Closing the files
-    fileWriter.close();
+    // Open the file to read it
+    fileReader.open(filePath);
+	string line = " ";
+    // Getline until eof
+    while(getline(fileReader, line, '\n'))
+    {
+        // If the line is not equal to removeString, push back to vector
+        if(line != removeString)
+            newFile.push_back(line);
+        else
+            continue;
+    }
     fileReader.close();
+
+    // For loop to enter the vector into the new file
+    fileWriter.open(filePath);
+    for(unsigned int i = 0; i < newFile.size(); i++)
+	{
+		fileWriter << newFile[i] << endl;
+	}
+    fileWriter.close();
+    
 }
 
 // 2.1 add getInput() function
@@ -296,7 +311,7 @@ string validateArguments(vector<string> args)
 		if(args.size() == 3)
 		{
 			// If characters are invalid, try to open the file
-			if(validateCharacters(args[1]) == true)
+			if(invalidCharacters(args[1]) == true)
 				return CREATE_INV_TABLE_NAME_MSG;
 			// Try to open the file
 			fileReader.open(TABLE_FILE_DIRECTORY + args[1] + TABLE_FILETYPE);
@@ -310,7 +325,7 @@ string validateArguments(vector<string> args)
 				return CREATE_INV_HEADERS_MSG;
 			// Iterate through <attribute_list> to verify the characters
 			// are valid
-			if(validateCharacters(args[2]) == true)
+			if(invalidCharactersHeader(args[2]) == true)
 				return CREATE_INV_HEADERS_MSG;
 			// **Else, all flags are valid and the table can be created**
 			return VALID_ARG_MSG;
@@ -325,7 +340,7 @@ string validateArguments(vector<string> args)
         if(args.size() == 2)
         {
             // Valid
-            if(args[1] == SHOW_ARG_1)
+            if(toLower(args[1]) == SHOW_ARG_1)
                 return VALID_ARG_MSG;
             // Invalid
             return SHOW_INV_OPT_MSG;
@@ -405,7 +420,7 @@ void executeCommand(vector<string> args)
 		// Write the name of the table to the tables file
         
         fileWriterDatabase.open(TABLES_TABLE, ios_base::app);
-        fileWriterDatabase << args[1];
+        fileWriterDatabase << args[1] << endl;
         cout << args[1] << TABLE_CREATE_SUCCESS_MSG;
 
         // Close the files
@@ -422,10 +437,10 @@ void executeCommand(vector<string> args)
 	{
 		string filepath = "data/" + args[1] + ".csv";
 		// Remove line from table
-		removeString(args[0], args[1]);
-		// Remove the table
+		removeString(args[1]);
+		// Remove the table/file completely
 		remove(filepath.c_str());
-		cout << endl << args[1] << TABLE_DELETE_SUCCESS_MSG;
+		cout << args[1] << TABLE_DELETE_SUCCESS_MSG;
 	}
 }
 
@@ -451,9 +466,3 @@ void commandLoop()
 	Unauthorized reproductions of this handout and any accompanying code
 	are strictly forbidden under Nevada State and US Federal law.
 */
-
-// GO to where the file is
-// g++ -g test.cpp
-// gdb a.out
-// (for break point type break and then the line number)
-// r (command line arguments)
