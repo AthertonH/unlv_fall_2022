@@ -183,7 +183,7 @@ bool printTable(string file)
 		for (int i = 0; i < colCnt; i++)
 			cout << "+" << setw(widths[i] + 3);
 		cout << "+" << endl;
-		cout << rowCnt - 1 << " row(s) in set.";
+		cout << rowCnt - 1 << " row(s) in set.\n";
 		return true;
 	}
 	return false;
@@ -217,14 +217,11 @@ bool validateCharacters(string testString)
     for(unsigned int i = 0; i < testString.length(); i++)
     {
         // Looping through the name to validate characters
-        if(testString[i] < 96 || testString[i] > 123)
-			return true;
-		if(testString[i] != '-')
-			return true;
-        if(testString[i] != '_')  
-			return true;
-        if(testString[i] == ',' && testString[i+1] == ',')
-			return true;
+        if((testString[i] < 96 || testString[i] > 123) &&
+        (testString[i] != '-') &&
+        (testString[i] != '_') && 
+        (testString[i] == ',' && testString[i+1] == ','))
+            return true;
     }
     return false;
 }
@@ -328,7 +325,7 @@ string validateArguments(vector<string> args)
         if(args.size() == 2)
         {
             // Valid
-            if(toLower(args[1]) == SHOW_ARG_1)
+            if(args[1] == SHOW_ARG_1)
                 return VALID_ARG_MSG;
             // Invalid
             return SHOW_INV_OPT_MSG;
@@ -377,6 +374,8 @@ void executeCommand(vector<string> args)
 	{
 		exit(0);
 	}
+        
+
 	// Showing what happens inside the function
 	cout << args.back();
 
@@ -404,8 +403,9 @@ void executeCommand(vector<string> args)
 			fileWriter << headers[i] << endl;
 
 		// Write the name of the table to the tables file
+        
         fileWriterDatabase.open(TABLES_TABLE, ios_base::app);
-        fileWriterDatabase << args[1] << endl;
+        fileWriterDatabase << args[1];
         cout << args[1] << TABLE_CREATE_SUCCESS_MSG;
 
         // Close the files
@@ -422,10 +422,10 @@ void executeCommand(vector<string> args)
 	{
 		string filepath = "data/" + args[1] + ".csv";
 		// Remove line from table
-		removeString("data/tables.csv", args[1]);
+		removeString(args[0], args[1]);
 		// Remove the table
 		remove(filepath.c_str());
-		cout << args[1] << TABLE_DELETE_SUCCESS_MSG;
+		cout << endl << args[1] << TABLE_DELETE_SUCCESS_MSG;
 	}
 }
 

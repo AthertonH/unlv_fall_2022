@@ -371,10 +371,13 @@ void executeCommand(vector<string> args)
 
     // ****QUIT THE PROGRAM****
     if((toLower(args[0]) == QUIT_CMD) && (args.back() == VALID_ARG_MSG))
-        exit(0);
+	{
+		exit(0);
+	}
+        
 
 	// Showing what happens inside the function
-	cout << COMMAND_PROMPT << args.back();
+	cout << args.back();
 
     // ****WRITE THE TABLE****
     if((toLower(args[0]) == CREATE_CMD) && (args.back() == VALID_ARG_MSG))

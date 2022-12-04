@@ -5,8 +5,8 @@ using namespace std;
 int main()
 {
     string names[7] = {"Daniely", "Joshua", "Izaiah", "Nathan", "Destiny", "Harrison", "Cabe"};
-    int questions = 28;
-    int index = 2;
+    int questions = 40;
+    int index = 3;
 
 
     for(int i = 2; i <= questions; i++)
