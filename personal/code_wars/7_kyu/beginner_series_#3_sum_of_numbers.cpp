@@ -17,12 +17,15 @@ Note: a and b are not ordered!
 
 int get_sum(int a, int b)
 {
-    int x = a + b;
-    for(int i = a; x <= )
+    if(a == b)
+        return a;
+    for(int i = a; i <= b; i++)
+        a += i;
+    return a;
 }
 
 int main()
 {
-    cout << get_sum(10, 20);
+    cout << get_sum(-2, 5);
     return 0;
 }
