@@ -17,12 +17,10 @@ using namespace std;
 int square_digits(int num) 
 {
     
-    
 }
 
 int main()
 {
     
-
     return 0;
 }
