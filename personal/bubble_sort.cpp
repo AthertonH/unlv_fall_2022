@@ -4,7 +4,6 @@ using namespace std;
 const int ARRAY_SIZE = 20;
 int main()
 {
-    
 
     int array[ARRAY_SIZE] = {1, 2, 4, 1, 2, 6, 4, 5, 1, 2, 5, 2, 4, 6, 0, 89, 76, 6, 5};
 
