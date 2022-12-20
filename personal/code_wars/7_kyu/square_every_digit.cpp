@@ -10,17 +10,29 @@ Note: The function accepts an integer and returns an integer
 */
 
 #include <iostream>
+#include <cmath>
 #include <string>
 #include <vector>
 using namespace std;
 
 int square_digits(int num) 
 {
-    
+    string numStr = to_string(num);
+    string newNumStr = "";
+
+    for(int i = 0; i < numStr.length(); i++)
+    {
+        newNumStr += numStr[i] - '0';
+    }
+    return 0;
 }
 
 int main()
 {
-    
+    cout << square_digits(123273);
+
+
+
+
     return 0;
 }
