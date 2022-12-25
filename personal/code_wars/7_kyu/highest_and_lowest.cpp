@@ -26,7 +26,7 @@ string highAndLow(const string& numbers)
     stringstream iss(numbers);
     int number;
     vector<int> numbersV;
-
+     
     while(iss >> number)
         numbersV.push_back(number);
     
