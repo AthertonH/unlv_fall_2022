@@ -25,14 +25,15 @@ I have also created other katas. Take a look if you enjoyed this kata!
 
 #include <iostream>
 #include <string>
-using namespace std;
-
 int dontGiveMeFive(int start, int end)
 {
     int count = 0;
     for(int i = start; i <= end; i++)
     {
-     
+        std::string fiveString = std::to_string(i);
+        if(fiveString.find('5') != std::string::npos)
+            continue;
+        count++;
     }
     return count;
 }
