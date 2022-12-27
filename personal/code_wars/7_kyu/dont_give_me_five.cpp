@@ -40,6 +40,5 @@ int dontGiveMeFive(int start, int end)
 
 int main()
 {
-    cout << dontGiveMeFive(4, 17);
-
+    std::cout << dontGiveMeFive(4, 17);
 }
